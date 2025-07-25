@@ -1,40 +1,103 @@
-import { Schema } from "@/schema";
-import { useQuery, useZero } from "@rocicorp/zero/react";
-import { Button, Text, View } from "react-native";
+import { signOut, useSession } from "@/lib/auth";
+import { queries } from "@hello-zero-expo/shared";
+import { useQuery } from "@rocicorp/zero/react";
+import { Link, useNavigation, type Href } from "expo-router";
+import { useEffect, useRef } from "react";
+import {
+  Alert,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import AuthModal, { type AuthModalRef } from "../components/AuthModal";
+import ChannelListItem from "../components/ChannelListItem";
 
-export default function Index() {
-  const zero = useZero<Schema>();
-  const [messages] = useQuery(zero.query.message);
+export default function ChannelsScreen() {
+  const nav = useNavigation();
+  const authModalRef = useRef<AuthModalRef>(null);
+
+  const authData = useSession();
+  const [channels] = useQuery(queries.allChannels(authData.data));
+
+  useEffect(() => {
+    nav.setOptions({
+      headerLeft: () =>
+        authData.data ? (
+          <Pressable
+            onPress={() => signOut()}
+            style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
+            accessibilityRole="button"
+            accessibilityLabel="Log out"
+          >
+            <Text style={styles.headerLogoutText}>Logout</Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={() => authModalRef.current?.open()}
+            style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
+            accessibilityRole="button"
+            accessibilityLabel="Log in"
+          >
+            <Text style={styles.headerLoginText}>Login</Text>
+          </Pressable>
+        ),
+    });
+  }, [nav, authData.data]);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: 16,
-      }}
-    >
-      <View style={{ flex: 1, alignItems: "center" }}>
-        {messages.map((message) => (
-          <Text key={message.id}>{message.body}</Text>
-        ))}
-      </View>
-      <Button
-        title="Add User"
-        onPress={() => {
-          zero.mutate.message.upsert({
-            id: id(),
-            senderID: "9ogaDuDNFx",
-            body: `Hello, world ${id()}!`,
-            labels: [],
-            timestamp: new Date().getTime(),
-            mediumID: "b7rqt_8w_H",
-          });
-        }}
+    <View style={styles.container}>
+      <FlatList
+        data={channels}
+        keyExtractor={(c) => c.id}
+        contentContainerStyle={styles.listContent}
+        renderItem={({ item }) =>
+          authData.data ? (
+            <Link href={`/channel/${item.id}` as Href} asChild>
+              <Pressable>
+                <ChannelListItem channel={item} />
+              </Pressable>
+            </Link>
+          ) : (
+            <Pressable
+              onPress={() =>
+                Alert.alert(
+                  "Login required",
+                  "Please log in to view this channel.",
+                  [
+                    { text: "Cancel", style: "cancel" },
+                    {
+                      text: "Log in",
+                      onPress: () => authModalRef.current?.open(),
+                    },
+                  ]
+                )
+              }
+              style={({ pressed }) => [{ opacity: pressed ? 0.4 : 0.5 }]}
+              accessibilityRole="button"
+              accessibilityLabel="Channel (login required)"
+            >
+              <ChannelListItem channel={item} />
+            </Pressable>
+          )
+        }
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
+      <AuthModal ref={authModalRef} />
     </View>
   );
 }
 
-const id = () => Math.random().toString(36).substring(2, 15);
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#fff" },
+  listContent: { paddingVertical: 8 },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: "#E5E7EB",
+    marginLeft: 64,
+  },
+  headerRightButton: { paddingLeft: 8 },
+  headerLogoutText: { color: "#EF4444", fontWeight: "600" },
+  headerLoginText: { color: "#0EA5E9", fontWeight: "700" },
+});

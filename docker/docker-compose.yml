@@ -1,11 +1,11 @@
 services:
-  zstart_postgres:
+  hello_zero_expo_postgres:
     image: postgres:16.2-alpine
     shm_size: 1g
     user: postgres
     restart: always
     healthcheck:
-      test: 'pg_isready -U user --dbname=postgres'
+      test: "pg_isready -U user --dbname=postgres"
       interval: 10s
       timeout: 5s
       retries: 5
@@ -23,9 +23,5 @@ services:
       -c hot_standby=on 
       -c hot_standby_feedback=on
     volumes:
-      - zstart_pgdata:/var/lib/postgresql/data
-      - ./:/docker-entrypoint-initdb.d
-
-volumes:
-  zstart_pgdata:
-    driver: local
+      # this automatically runs drizzle migrations in alphabetical order
+      - ../migrations:/docker-entrypoint-initdb.d
