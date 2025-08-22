@@ -22,14 +22,14 @@ import {
   NodePgConnection,
   type NodePgZeroTransaction,
 } from "drizzle-zero/node-postgres";
-import { nanoid } from "nanoid";
+import crypto from "node:crypto";
 import { db } from "./db";
 import { getHono } from "./hono";
 
 type ServerTx = ServerTransaction<Schema, NodePgZeroTransaction<typeof db>>;
 
 const processor = new PushProcessor(
-  new ZQLDatabase(new NodePgConnection(db), schema),
+  new ZQLDatabase(new NodePgConnection(db), schema)
 );
 
 const createMutators = (authData: AuthData | null) => {
@@ -46,7 +46,7 @@ const createMutators = (authData: AuthData | null) => {
 
         // we can use the db tx to insert server-only data, like audit logs
         await tx.dbTransaction.wrappedTransaction.insert(auditLogs).values({
-          id: nanoid(),
+          id: crypto.randomUUID(),
           userId: authData.user.id,
           action: "sendMessage",
         });
@@ -71,7 +71,7 @@ const zero = getHono()
     const result = await handleGetQueriesRequest(
       (name, args) => ({ query: getQuery(authData, name, args) }),
       schema,
-      c.req.raw,
+      c.req.raw
     );
 
     return c.json(result);
@@ -84,7 +84,7 @@ function isQuery(key: string): key is keyof typeof queries {
 function getQuery(
   context: AuthData | null,
   name: string,
-  args: readonly ReadonlyJSONValue[],
+  args: readonly ReadonlyJSONValue[]
 ) {
   let query;
   if (isQuery(name)) {

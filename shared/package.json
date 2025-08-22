@@ -6,8 +6,8 @@
   "react-native": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./db": "./src/db/index.ts",
-    "./auth": "./src/auth.ts"
+    "./auth": "./src/auth.ts",
+    "./db": "./src/db/index.ts"
   },
   "scripts": {
     "generate": "npm run generate:zero && npm run generate:db",
@@ -17,10 +17,10 @@
   "dependencies": {
     "drizzle-orm": "^0.44.4",
     "drizzle-zero": "^0.14.0-beta.5",
-    "pg": "^8.13.0",
+    "pg": "^8.16.3",
     "zod": "^4.0.17"
   },
   "devDependencies": {
-    "typescript": "~5.9.2"
+    "drizzle-kit": "^0.31.4"
   }
 }

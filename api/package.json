@@ -3,25 +3,16 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "dotenv -- tsx watch src/index.ts",
-    "auth:generate": "npx @better-auth/cli generate --adapter=drizzle --provider=pg --out ../shared/src/db/better-auth",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
     "@hello-zero-expo/shared": "*",
-    "@hono/node-server": "^1.18.2",
+    "@hono/node-server": "^1.19.0",
     "better-auth": "^1.3.7",
-    "dotenv-cli": "^10.0.0",
-    "drizzle-orm": "^0.44.4",
-    "hono": "^4.9.1",
-    "pg": "^8.13.0"
+    "hono": "^4.9.4"
   },
   "devDependencies": {
-    "@better-auth/cli": "^0.5.0",
-    "@types/node": "^20.11.17",
-    "drizzle-kit": "^0.27.0",
-    "tsx": "^4.20.4",
-    "typescript": "^5.8.3"
+    "@types/node": "^24.3.0",
+    "tsx": "^4.20.4"
   }
 }

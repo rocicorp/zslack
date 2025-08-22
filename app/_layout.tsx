@@ -27,7 +27,10 @@ export default function RootLayout() {
     return {
       storageKey: "hello-zero-expo",
       kvStore: expoSQLiteStoreProvider(),
-      server: "https://macbook.cormo-turtle.ts.net:4848",
+      // 4848 is the default port for the zero server
+      // but localhost is not supported in android
+      // you need to change it to your API server's IP address
+      server: "http://localhost:4848",
       userID: authData?.user.id ?? "anon",
       schema,
       mutators: createMutators(authData),

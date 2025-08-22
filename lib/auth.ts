@@ -3,7 +3,10 @@ import { createAuthClient } from "better-auth/react";
 import * as SecureStore from "expo-secure-store";
 
 export const authClient = createAuthClient({
-  baseURL: "https://macbook.cormo-turtle.ts.net:3000",
+  // 3000 is the default port for the API server
+  // but localhost is not supported in android
+  // you need to change it to your API server's IP address
+  baseURL: "http://localhost:3000",
   plugins: [
     expoClient({
       scheme: "hello-zero-expo",

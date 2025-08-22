@@ -7,7 +7,6 @@
     "outDir": "./dist",
     "strict": true,
     "verbatimModuleSyntax": true,
-    "importsNotUsedAsValues": "error",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "rootDir": "."

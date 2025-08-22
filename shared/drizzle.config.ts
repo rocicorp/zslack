@@ -1,13 +1,14 @@
-import "dotenv/config";
 import { defineConfig } from "drizzle-kit";
+
+if (!process.env.ZERO_UPSTREAM_DB) {
+  throw new Error("ZERO_UPSTREAM_DB is not set");
+}
 
 export default defineConfig({
   schema: "./src/db/schema/index.ts",
   out: "../migrations",
   dialect: "postgresql",
   dbCredentials: {
-    url:
-      process.env.DATABASE_URL ??
-      "postgres://user:password@localhost:5430/postgres",
+    url: process.env.ZERO_UPSTREAM_DB,
   },
 });
