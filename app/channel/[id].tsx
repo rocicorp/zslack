@@ -67,20 +67,16 @@ export default function ChannelScreen() {
           placeholder={`Message #${channel?.name ?? ""}`}
           onSend={async (text) => {
             if (!authData.data) {
-              Alert.alert(
-                "Login required",
-                "Please log in to send messages.",
-                [
-                  { text: "Cancel", style: "cancel" },
-                  { text: "Log in", onPress: () => authModalRef.current?.open() },
-                ]
-              );
+              Alert.alert("Login required", "Please log in to send messages.", [
+                { text: "Cancel", style: "cancel" },
+                { text: "Log in", onPress: () => authModalRef.current?.open() },
+              ]);
               return;
             }
 
             if (!channel) {
               throw new Error("Channel not found");
-            };
+            }
 
             await z.mutate.message.sendMessage({
               id: generateId(),

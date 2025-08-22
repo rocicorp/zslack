@@ -4,7 +4,7 @@ import {
   pgTable,
   text,
   timestamp,
-  uniqueIndex
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { users } from "./public";
 
@@ -30,10 +30,10 @@ export const accounts = pgTable(
   (table) => [
     uniqueIndex("account_provider_account_unique").on(
       table.providerId,
-      table.accountId
+      table.accountId,
     ),
     index("account_user_id_idx").on(table.userId),
-  ]
+  ],
 );
 
 export const accountRelations = relations(accounts, ({ one }) => ({
@@ -60,7 +60,7 @@ export const sessions = pgTable(
   (table) => [
     uniqueIndex("session_token_unique").on(table.token),
     index("session_user_id_idx").on(table.userId),
-  ]
+  ],
 );
 
 export const sessionRelations = relations(sessions, ({ one }) => ({
@@ -80,7 +80,7 @@ export const verifications = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
-  (table) => [index("verification_identifier_idx").on(table.identifier)]
+  (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
 export const auditLogs = pgTable("audit_log", {

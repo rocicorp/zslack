@@ -18,7 +18,7 @@ export const users = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
-  (table) => [uniqueIndex("user_email_unique").on(table.email)]
+  (table) => [uniqueIndex("user_email_unique").on(table.email)],
 );
 
 export const userRelations = relations(users, ({ many }) => ({

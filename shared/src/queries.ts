@@ -10,14 +10,14 @@ export const queries = {
       return builder.users
         .where("id", "=", authData?.user.id ?? "__not_logged_in__")
         .one();
-    }
+    },
   ),
 
   allChannels: syncedQueryWithContext(
     "allChannels",
     (_authData: AuthData | null) => {
       return builder.channels;
-    }
+    },
   ),
 
   channelWithMessages: syncedQueryWithContext(
@@ -28,9 +28,9 @@ export const queries = {
       return builder.channels
         .where("id", "=", id)
         .related("messages", (q) =>
-          q.related("sender").orderBy("createdAt", "desc")
+          q.related("sender").orderBy("createdAt", "desc"),
         )
         .one();
-    }
+    },
   ),
 };

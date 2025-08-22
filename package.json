@@ -20,7 +20,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "format": "npx prettier --write ."
+    "format": "npx prettier --write .",
+    "generate": "npm run generate --workspace=shared"
   },
   "dependencies": {
     "@better-auth/expo": "^1.3.7",

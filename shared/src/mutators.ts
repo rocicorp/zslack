@@ -14,13 +14,13 @@ export function createMutators(authData: AuthData | null) {
           id,
           channelId,
           body,
-          createdAt, 
+          createdAt,
         }: {
           id: string;
           createdAt: number;
           channelId: string;
           body: string;
-        }
+        },
       ) {
         isLoggedIn(authData);
 

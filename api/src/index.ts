@@ -40,5 +40,5 @@ serve(
   },
   (info) => {
     console.log(`Server is running on ${info.address}:${info.port}`);
-  }
+  },
 );
