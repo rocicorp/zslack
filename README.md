@@ -2,6 +2,10 @@
 
 An Expo app (iOS/Android/Web) using Zero for realtime sync, with a Hono API, Better Auth, and Drizzle ORM (PostgreSQL). Shared types, schema, queries, and mutators live in the `shared` workspace.
 
+<a href="https://github.com/user-attachments/assets/2f627fd7-10b1-4113-912e-dda39793bd13">
+  <img alt="demo of expo with android, ios, and web" src="./scripts/web-demo.gif">
+</a>
+
 ## Option 1: Run this repo
 
 ### Prerequisites
