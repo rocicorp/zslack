@@ -19,6 +19,13 @@ import MessageItem from "../../components/MessageItem";
 
 export default function ChannelScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+
+  const authData = useSession();
+
+  return authData.isPending ? <></> : <ChannelScreenList id={id} />;
+}
+
+function ChannelScreenList({ id }: { id: string }) {
   const insets = useSafeAreaInsets();
   const nav = useNavigation();
 
