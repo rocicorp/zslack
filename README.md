@@ -17,11 +17,8 @@ npm i
 
 ### 2) Create an .env
 
-Set your Postgres connection string (this matches the Docker setup below).
-
-```ini
-# .env
-DATABASE_URL=postgres://user:password@localhost:5430/postgres
+```bash
+cp .env.sample .env
 ```
 
 ### 3) Start PostgreSQL (Docker)
