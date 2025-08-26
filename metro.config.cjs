@@ -7,13 +7,13 @@ const config = getDefaultConfig(__dirname);
 // -- Add support for web: https://docs.expo.dev/versions/latest/sdk/sqlite/#web-setup --
 
 // Add wasm asset support
-config.resolver.assetExts.push('wasm');
- 
+config.resolver.assetExts.push("wasm");
+
 // Add COEP and COOP headers to support SharedArrayBuffer
 config.server.enhanceMiddleware = (middleware) => {
   return (req, res, next) => {
-    res.setHeader('Cross-Origin-Embedder-Policy', 'credentialless');
-    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
     middleware(req, res, next);
   };
 };

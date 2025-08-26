@@ -11,11 +11,7 @@ export const auth = betterAuth({
     provider: "pg",
     usePlural: true,
   }),
-  trustedOrigins: [
-    "hello-zero-expo://",
-    "http://localhost:8081",
-
-  ],
+  trustedOrigins: ["hello-zero-expo://", "http://localhost:8081"],
   emailAndPassword: {
     enabled: true,
   },
