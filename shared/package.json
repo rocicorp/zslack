@@ -1,0 +1,26 @@
+{
+  "name": "@hello-zero-expo/shared",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "react-native": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./auth": "./src/auth.ts",
+    "./db": "./src/db/index.ts"
+  },
+  "scripts": {
+    "generate": "npm run generate:zero && npm run generate:db",
+    "generate:zero": "drizzle-zero generate -s ./src/db/schema/public.ts -o ./src/zero-schema.gen.ts -f",
+    "generate:db": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.44.4",
+    "drizzle-zero": "^0.14.0-beta.5",
+    "pg": "^8.16.3",
+    "zod": "^4.0.17"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.4"
+  }
+}

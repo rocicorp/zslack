@@ -1,0 +1,17 @@
+{
+  "name": "@hello-zero-expo/api",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "@hello-zero-expo/shared": "*",
+    "@hono/node-server": "^1.19.0",
+    "better-auth": "^1.3.7",
+    "hono": "^4.9.4"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0"
+  }
+}

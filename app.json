@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "zexpo",
-    "slug": "zexpo",
+    "name": "hello-zero-expo",
+    "slug": "hello-zero-expo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "zexpo",
+    "scheme": "hello-zero-expo",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
