@@ -5,9 +5,7 @@ import { builder } from "./zero-schema.gen";
 import { isLoggedIn } from "./zql";
 
 export const queries = {
-  allChannels: syncedQuery("allChannels", z.tuple([]), () => {
-    return builder.channels;
-  }),
+  allChannels: syncedQuery("allChannels", z.tuple([]), () => builder.channels),
 
   channelWithMessages: syncedQueryWithContext(
     "channelWithMessages",
@@ -18,9 +16,9 @@ export const queries = {
       return builder.channels
         .where("id", "=", id)
         .related("messages", (q) =>
-          q.related("sender").orderBy("createdAt", "desc")
+          q.related("sender").orderBy("createdAt", "desc"),
         )
         .one();
-    }
+    },
   ),
 };

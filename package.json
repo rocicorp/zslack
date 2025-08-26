@@ -14,7 +14,6 @@
     "dev:zero-cache": "dotenv -- zero-cache-dev -p shared/src/schema.ts",
     "dev:db-up": "docker compose --env-file .env -f ./docker/docker-compose.yml up",
     "dev:db-down": "docker compose --env-file .env -f ./docker/docker-compose.yml down",
-    "dev:clean": "dotenv -- rm -rf \"${ZERO_REPLICA_FILE}\"*",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",

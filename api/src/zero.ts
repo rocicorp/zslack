@@ -29,7 +29,7 @@ import { getHono } from "./hono";
 type ServerTx = ServerTransaction<Schema, NodePgZeroTransaction<typeof db>>;
 
 const processor = new PushProcessor(
-  new ZQLDatabase(new NodePgConnection(db), schema)
+  new ZQLDatabase(new NodePgConnection(db), schema),
 );
 
 const createMutators = (authData: AuthData | null) => {
@@ -71,20 +71,20 @@ const zero = getHono()
     const result = await handleGetQueriesRequest(
       (name, args) => ({ query: getQuery(authData, name, args) }),
       schema,
-      c.req.raw
+      c.req.raw,
     );
 
     return c.json(result);
   });
 
 const validatedQueries = Object.fromEntries(
-  Object.values(queries).map((q) => [q.queryName, withValidation(q)])
+  Object.values(queries).map((q) => [q.queryName, withValidation(q)]),
 );
 
 function getQuery(
   authData: AuthData | null,
   name: string,
-  args: readonly ReadonlyJSONValue[]
+  args: readonly ReadonlyJSONValue[],
 ) {
   if (name in validatedQueries) {
     const q = validatedQueries[name];

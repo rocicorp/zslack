@@ -71,7 +71,7 @@ export default function ChannelsScreen() {
                       text: "Log in",
                       onPress: () => authModalRef.current?.open(),
                     },
-                  ]
+                  ],
                 )
               }
               style={({ pressed }) => [{ opacity: pressed ? 0.4 : 0.5 }]}
