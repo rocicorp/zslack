@@ -11,9 +11,15 @@ import { expoSQLiteStoreProvider } from "@rocicorp/zero/expo";
 import { ZeroProvider } from "@rocicorp/zero/react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+
+// on web, we use the browser's IndexedDB
+const kvStore = Platform.OS === "web" ? undefined : expoSQLiteStoreProvider();
+
+// on web, we don't need to pass the auth cookie, since this is handled by the browser
+const auth = Platform.OS === "web" ? undefined : authClient.getCookie();
 
 export default function RootLayout() {
   const { data: session } = useSession();
@@ -26,7 +32,7 @@ export default function RootLayout() {
   const zeroProps = useMemo(() => {
     return {
       storageKey: "hello-zero-expo",
-      kvStore: expoSQLiteStoreProvider(),
+      kvStore,
       // 4848 is the default port for the zero server
       // but localhost is not supported in android
       // you need to change it to your API server's IP address
@@ -34,7 +40,7 @@ export default function RootLayout() {
       userID: authData?.user.id ?? "anon",
       schema,
       mutators: createMutators(authData),
-      auth: authClient.getCookie(),
+      auth,
       enableLegacyMutators: false,
       enableLegacyQueries: false,
     } as const satisfies ZeroOptions<Schema, Mutators>;

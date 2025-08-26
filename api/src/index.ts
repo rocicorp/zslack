@@ -1,19 +1,30 @@
 import { authDataSchema } from "@hello-zero-expo/shared/auth";
 import { serve } from "@hono/node-server";
+import { cors } from "hono/cors";
 import { auth } from "./auth";
 import { getHono } from "./hono";
 import { zero } from "./zero";
 
 const app = getHono();
 
+app.use(
+  "/api/*",
+  cors({
+    origin: (origin) => origin ?? "",
+    allowMethods: ["POST", "GET", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
 app.on(["GET", "POST"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
 app.use("*", async (c, next) => {
   const authHeader = c.req.raw.headers.get("Authorization");
-
   const cookie = authHeader?.split("Bearer ")[1];
 
   const newHeaders = new Headers(c.req.raw.headers);
+
   if (cookie) {
     newHeaders.set("Cookie", cookie);
   }
@@ -40,5 +51,5 @@ serve(
   },
   (info) => {
     console.log(`Server is running on ${info.address}:${info.port}`);
-  },
+  }
 );
