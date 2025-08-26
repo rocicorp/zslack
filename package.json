@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "dev:expo": "expo start",
-    "dev:api": "dotenv -- npm run dev --workspace=api",
+    "dev:api": "tsx scripts/check-env.ts && dotenv -- npm run dev --workspace=api",
     "dev:zero-cache": "dotenv -- zero-cache-dev -p shared/src/schema.ts",
     "dev:db-up": "docker compose --env-file .env -f ./docker/docker-compose.yml up",
     "dev:db-down": "docker compose --env-file .env -f ./docker/docker-compose.yml down",
@@ -29,7 +29,7 @@
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
-    "@rocicorp/zero": "file:../mono/packages/zero/rocicorp-zero-0.23.2025081901.tgz",
+    "@rocicorp/zero": "^0.23.2025082600",
     "expo": "~53.0.20",
     "expo-blur": "~14.1.5",
     "expo-constants": "~17.1.7",
@@ -62,6 +62,7 @@
     "dotenv-cli": "^10.0.0",
     "eslint": "^9.33.0",
     "eslint-config-expo": "~9.2.0",
+    "tsx": "^4.20.4",
     "typescript": "~5.9.2"
   }
 }

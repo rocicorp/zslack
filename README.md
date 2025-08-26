@@ -134,7 +134,7 @@ Queries are defined in `shared/src/queries.ts` and consumed with `useQuery`.
 
 ```21:62:app/index.tsx
   const authData = useSession();
-  const [channels] = useQuery(queries.allChannels(authData.data));
+  const [channels] = useQuery(queries.allChannels());
   // ...render list of channels...
 ```
 

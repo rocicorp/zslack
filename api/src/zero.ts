@@ -9,9 +9,9 @@ import {
 import type { AuthData } from "@hello-zero-expo/shared/auth";
 import { auditLogs } from "@hello-zero-expo/shared/db";
 import {
-  type AnyQuery,
   type ReadonlyJSONValue,
   type ServerTransaction,
+  withValidation,
 } from "@rocicorp/zero";
 import {
   handleGetQueriesRequest,
@@ -77,28 +77,20 @@ const zero = getHono()
     return c.json(result);
   });
 
-function isQuery(key: string): key is keyof typeof queries {
-  return key in queries;
-}
+const validatedQueries = Object.fromEntries(
+  Object.values(queries).map((q) => [q.queryName, withValidation(q)])
+);
 
 function getQuery(
-  context: AuthData | null,
+  authData: AuthData | null,
   name: string,
   args: readonly ReadonlyJSONValue[]
 ) {
-  let query;
-  if (isQuery(name)) {
-    query = (
-      queries[name] as (
-        context: AuthData | null,
-        ...args: readonly ReadonlyJSONValue[]
-      ) => AnyQuery
-    )(context, ...args);
-  } else {
-    throw new Error(`Unknown query: ${name}`);
+  if (name in validatedQueries) {
+    const q = validatedQueries[name];
+    return q(authData, ...args);
   }
-
-  return query;
+  throw new Error(`Unknown query: ${name}`);
 }
 
 export { zero };
