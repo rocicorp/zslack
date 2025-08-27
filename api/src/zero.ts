@@ -1,26 +1,26 @@
 import {
-  type ReadonlyJSONValue,
-  type ServerTransaction,
-  withValidation,
+    type ReadonlyJSONValue,
+    type ServerTransaction,
+    withValidation,
 } from "@rocicorp/zero";
 import {
-  handleGetQueriesRequest,
-  PushProcessor,
-  ZQLDatabase,
+    handleGetQueriesRequest,
+    PushProcessor,
+    ZQLDatabase,
 } from "@rocicorp/zero/server";
 import {
-  createMutators as createMutatorsShared,
-  isLoggedIn,
-  type Mutators,
-  queries,
-  schema,
-  type Schema,
-} from "@zlack/shared";
-import type { AuthData } from "@zlack/shared/auth";
-import { auditLogs } from "@zlack/shared/db";
+    createMutators as createMutatorsShared,
+    isLoggedIn,
+    type Mutators,
+    queries,
+    schema,
+    type Schema,
+} from "@zslack/shared";
+import type { AuthData } from "@zslack/shared/auth";
+import { auditLogs } from "@zslack/shared/db";
 import {
-  NodePgConnection,
-  type NodePgZeroTransaction,
+    NodePgConnection,
+    type NodePgZeroTransaction,
 } from "drizzle-zero/node-postgres";
 import crypto from "node:crypto";
 import { db } from "./db";

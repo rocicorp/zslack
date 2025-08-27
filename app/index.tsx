@@ -1,15 +1,15 @@
 import { signOut, useSession } from "@/lib/auth";
 import { useQuery } from "@rocicorp/zero/react";
-import { queries } from "@zlack/shared";
+import { queries } from "@zslack/shared";
 import { Link, useNavigation, type Href } from "expo-router";
 import { useEffect, useRef } from "react";
 import {
-  Alert,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
+    Alert,
+    FlatList,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
 } from "react-native";
 import AuthModal, { type AuthModalRef } from "../components/AuthModal";
 import ChannelListItem from "../components/ChannelListItem";

@@ -1,5 +1,5 @@
 services:
-  zlack_postgres:
+  zslack_postgres:
     image: postgres:16.2-alpine
     shm_size: 1g
     user: postgres

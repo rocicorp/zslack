@@ -1,4 +1,4 @@
-import type { Message, User } from "@zlack/shared";
+import type { Message, User } from "@zslack/shared";
 import { memo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { formatTime } from "../lib/time";
