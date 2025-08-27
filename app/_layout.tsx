@@ -7,7 +7,7 @@ import {
 } from "@hello-zero-expo/shared";
 import { authDataSchema } from "@hello-zero-expo/shared/auth";
 import type { ZeroOptions } from "@rocicorp/zero";
-import { expoSQLiteStoreProvider } from "@rocicorp/zero/expo";
+import { expoSQLiteStoreProvider } from "@rocicorp/zero/react-native";
 import { ZeroProvider } from "@rocicorp/zero/react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
