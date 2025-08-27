@@ -1,7 +1,7 @@
 import { useSession } from "@/lib/auth";
 import { generateId } from "@/lib/id";
-import { queries, type Mutators, type Schema } from "@hello-zero-expo/shared";
 import { useQuery, useZero } from "@rocicorp/zero/react";
+import { queries, type Mutators, type Schema } from "@zlack/shared";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect, useRef } from "react";
 import {
@@ -35,6 +35,8 @@ function ChannelScreenList({ id }: { id: string }) {
   const authModalRef = useRef<AuthModalRef>(null);
 
   const [channel] = useQuery(queries.channelWithMessages(authData.data, id));
+
+  console.log(channel);
 
   useEffect(() => {
     // Show channel title in header

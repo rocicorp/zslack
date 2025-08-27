@@ -1,4 +1,4 @@
-# Hello Zero Expo
+# Zlack
 
 An Expo app (iOS/Android/Web) using Zero for realtime sync, with a Hono API, Better Auth, and Drizzle ORM (PostgreSQL). Shared types, schema, queries, and mutators live in the `shared` workspace.
 
@@ -118,7 +118,7 @@ We use Expo SQLite for local storage and provide auth and mutators from the shar
 ```12:36:app/_layout.tsx
   const zeroProps = useMemo(() => {
     return {
-      storageKey: "hello-zero-expo",
+      storageKey: "zlack",
       kvStore: expoSQLiteStoreProvider(),
       server: "http://localhost:4848", // set to your Zero cache URL
       userID: authData?.user.id ?? "anon",
@@ -153,7 +153,7 @@ On the client, the Better Auth Expo client is initialized here:
 ```5:16:lib/auth.ts
 export const authClient = createAuthClient({
   baseURL: "http://localhost:3000", // API URL for dev
-  plugins: [expoClient({ scheme: "hello-zero-expo", storagePrefix: "hello-zero-expo", storage: SecureStore })],
+  plugins: [expoClient({ scheme: "zlack", storagePrefix: "zlack", storage: SecureStore })],
 });
 ```
 

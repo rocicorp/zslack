@@ -1,4 +1,4 @@
-import type { Channel } from "@hello-zero-expo/shared";
+import type { Channel } from "@zlack/shared";
 import { memo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
