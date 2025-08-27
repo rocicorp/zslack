@@ -1,16 +1,16 @@
 {
   "$schema": "https://docs.expo.dev/schemas/app.json",
   "expo": {
-    "name": "zlack",
-    "slug": "zlack",
+    "name": "zslack",
+    "slug": "zslack",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "zlack",
+    "scheme": "zslack",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "bundleIdentifier": "dev.rocicorp.zlack",
+      "bundleIdentifier": "dev.rocicorp.zslack",
       "buildNumber": "1",
       "supportsTablet": true,
       "infoPlist": {
@@ -18,7 +18,7 @@
       }
     },
     "android": {
-      "package": "dev.rocicorp.zlack",
+      "package": "dev.rocicorp.zslack",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",

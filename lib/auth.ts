@@ -14,8 +14,8 @@ export const authClient = createAuthClient({
       ? []
       : [
           expoClient({
-            scheme: "zlack",
-            storagePrefix: "zlack",
+            scheme: "zslack",
+            storagePrefix: "zslack",
             storage: SecureStore,
           }),
         ],

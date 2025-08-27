@@ -1,4 +1,4 @@
-import type { AuthData } from "@zlack/shared/auth";
+import type { AuthData } from "@zslack/shared/auth";
 import { Hono } from "hono";
 
 export const getHono = () =>

@@ -15,9 +15,9 @@ import {
   queries,
   schema,
   type Schema,
-} from "@zlack/shared";
-import type { AuthData } from "@zlack/shared/auth";
-import { auditLogs } from "@zlack/shared/db";
+} from "@zslack/shared";
+import type { AuthData } from "@zslack/shared/auth";
+import { auditLogs } from "@zslack/shared/db";
 import {
   NodePgConnection,
   type NodePgZeroTransaction,

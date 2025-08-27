@@ -7,8 +7,8 @@ import {
   type Mutators,
   schema,
   type Schema,
-} from "@zlack/shared";
-import { authDataSchema } from "@zlack/shared/auth";
+} from "@zslack/shared";
+import { authDataSchema } from "@zslack/shared/auth";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useMemo } from "react";
@@ -31,7 +31,7 @@ export default function RootLayout() {
 
   const zeroProps = useMemo(() => {
     return {
-      storageKey: "zlack",
+      storageKey: "zslack",
       kvStore,
       // 4848 is the default port for the zero server
       // but localhost is not supported in android

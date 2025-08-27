@@ -1,6 +1,6 @@
 import { signOut, useSession } from "@/lib/auth";
 import { useQuery } from "@rocicorp/zero/react";
-import { queries } from "@zlack/shared";
+import { queries } from "@zslack/shared";
 import { Link, useNavigation, type Href } from "expo-router";
 import { useEffect, useRef } from "react";
 import {

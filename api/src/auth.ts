@@ -1,5 +1,5 @@
 import { expo } from "@better-auth/expo";
-import { drizzleSchema } from "@zlack/shared/db";
+import { drizzleSchema } from "@zslack/shared/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db";
@@ -11,7 +11,7 @@ export const auth = betterAuth({
     provider: "pg",
     usePlural: true,
   }),
-  trustedOrigins: ["zlack://", "http://localhost:8081"],
+  trustedOrigins: ["zslack://", "http://localhost:8081"],
   emailAndPassword: {
     enabled: true,
   },

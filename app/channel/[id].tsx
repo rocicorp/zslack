@@ -1,7 +1,7 @@
 import { useSession } from "@/lib/auth";
 import { generateId } from "@/lib/id";
 import { useQuery, useZero } from "@rocicorp/zero/react";
-import { queries, type Mutators, type Schema } from "@zlack/shared";
+import { queries, type Mutators, type Schema } from "@zslack/shared";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect, useRef } from "react";
 import {
