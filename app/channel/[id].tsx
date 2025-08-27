@@ -36,8 +36,6 @@ function ChannelScreenList({ id }: { id: string }) {
 
   const [channel] = useQuery(queries.channelWithMessages(authData.data, id));
 
-  console.log(channel);
-
   useEffect(() => {
     // Show channel title in header
     nav.setOptions({ title: channel ? `# ${channel.name}` : "Channel" });
