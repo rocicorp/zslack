@@ -15,6 +15,12 @@ import AuthModal, { type AuthModalRef } from "../components/AuthModal";
 import ChannelListItem from "../components/ChannelListItem";
 
 export default function ChannelsScreen() {
+  const authData = useSession();
+
+  return authData.isPending ? <></> : <ChannelScreenList />;
+}
+
+function ChannelScreenList() {
   const nav = useNavigation();
   const authModalRef = useRef<AuthModalRef>(null);
 

@@ -5,7 +5,9 @@ import { builder } from "./zero-schema.gen";
 import { isLoggedIn } from "./zql";
 
 export const queries = {
-  allChannels: syncedQuery("allChannels", z.tuple([]), () => builder.channels),
+  allChannels: syncedQuery("allChannels", z.tuple([]), () =>
+    builder.channels.limit(10),
+  ),
 
   channelWithMessages: syncedQueryWithContext(
     "channelWithMessages",

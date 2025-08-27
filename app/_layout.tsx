@@ -18,16 +18,21 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 // on web, we use the browser's IndexedDB
 const kvStore = Platform.OS === "web" ? undefined : expoSQLiteStoreProvider();
 
-// on web, we don't need to pass the auth cookie, since this is handled by the browser
-const auth = Platform.OS === "web" ? undefined : authClient.getCookie();
-
 export default function RootLayout() {
-  const { data: session } = useSession();
+  const { data: session, isPending } = useSession();
 
   const authData = useMemo(() => {
     const result = authDataSchema.safeParse(session);
     return result.success ? result.data : null;
   }, [session]);
+
+  const cookie = useMemo(() => {
+    const ck = Platform.OS === "web" ? undefined : authClient.getCookie();
+    return ck ? ck : undefined;
+    // we force a re-render when the session changes, since getCookie is
+    // not reactive
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session, isPending]);
 
   const zeroProps = useMemo(() => {
     return {
@@ -40,11 +45,11 @@ export default function RootLayout() {
       userID: authData?.user.id ?? "anon",
       schema,
       mutators: createMutators(authData),
-      auth,
+      auth: cookie,
       enableLegacyMutators: false,
       enableLegacyQueries: false,
     } as const satisfies ZeroOptions<Schema, Mutators>;
-  }, [authData]);
+  }, [authData, cookie]);
 
   return (
     <ZeroProvider {...zeroProps}>
