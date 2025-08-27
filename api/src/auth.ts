@@ -11,7 +11,7 @@ export const auth = betterAuth({
     provider: "pg",
     usePlural: true,
   }),
-  trustedOrigins: ["zlack://", "https://localhost:8081"],
+  trustedOrigins: ["zlack://", "http://localhost:8081"],
   emailAndPassword: {
     enabled: true,
   },
