@@ -1,12 +1,12 @@
 {
-  "name": "@hello-zero-expo/api",
+  "name": "@zlack/api",
   "type": "module",
   "private": true,
   "scripts": {
     "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
-    "@hello-zero-expo/shared": "*",
+    "@zlack/shared": "*",
     "@hono/node-server": "^1.19.0",
     "better-auth": "^1.3.7",
     "hono": "^4.9.4"

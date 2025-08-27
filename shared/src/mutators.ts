@@ -1,5 +1,5 @@
-import type { Schema } from "@hello-zero-expo/shared";
 import type { Transaction } from "@rocicorp/zero";
+import type { Schema } from "@zlack/shared";
 import type { AuthData } from "./auth";
 import { isLoggedIn } from "./zql";
 

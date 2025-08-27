@@ -1,5 +1,5 @@
 import { expo } from "@better-auth/expo";
-import { drizzleSchema } from "@hello-zero-expo/shared/db";
+import { drizzleSchema } from "@zlack/shared/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db";
@@ -11,7 +11,7 @@ export const auth = betterAuth({
     provider: "pg",
     usePlural: true,
   }),
-  trustedOrigins: ["hello-zero-expo://", "http://localhost:8081"],
+  trustedOrigins: ["zlack://", "http://localhost:8081"],
   emailAndPassword: {
     enabled: true,
   },

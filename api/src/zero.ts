@@ -1,14 +1,4 @@
 import {
-  createMutators as createMutatorsShared,
-  isLoggedIn,
-  type Mutators,
-  queries,
-  schema,
-  type Schema,
-} from "@hello-zero-expo/shared";
-import type { AuthData } from "@hello-zero-expo/shared/auth";
-import { auditLogs } from "@hello-zero-expo/shared/db";
-import {
   type ReadonlyJSONValue,
   type ServerTransaction,
   withValidation,
@@ -18,6 +8,16 @@ import {
   PushProcessor,
   ZQLDatabase,
 } from "@rocicorp/zero/server";
+import {
+  createMutators as createMutatorsShared,
+  isLoggedIn,
+  type Mutators,
+  queries,
+  schema,
+  type Schema,
+} from "@zlack/shared";
+import type { AuthData } from "@zlack/shared/auth";
+import { auditLogs } from "@zlack/shared/db";
 import {
   NodePgConnection,
   type NodePgZeroTransaction,

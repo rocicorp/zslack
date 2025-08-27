@@ -1,4 +1,4 @@
-import { getDb } from "@hello-zero-expo/shared/db";
+import { getDb } from "@zlack/shared/db";
 
 if (!process.env.ZERO_UPSTREAM_DB) {
   throw new Error("ZERO_UPSTREAM_DB is not set");

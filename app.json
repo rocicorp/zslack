@@ -1,17 +1,25 @@
 {
+  "$schema": "https://docs.expo.dev/schemas/app.json",
   "expo": {
-    "name": "hello-zero-expo",
-    "slug": "hello-zero-expo",
+    "name": "zlack",
+    "slug": "zlack",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "hello-zero-expo",
+    "scheme": "zlack",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "dev.rocicorp.zlack",
+      "buildNumber": "1",
+      "supportsTablet": true,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "dev.rocicorp.zlack",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -37,6 +45,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "7407e326-e65a-44b5-a548-9731f0549e28"
+      }
     }
   }
 }

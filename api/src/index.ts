@@ -1,5 +1,5 @@
-import { authDataSchema } from "@hello-zero-expo/shared/auth";
 import { serve } from "@hono/node-server";
+import { authDataSchema } from "@zlack/shared/auth";
 import { cors } from "hono/cors";
 import { auth } from "./auth";
 import { getHono } from "./hono";

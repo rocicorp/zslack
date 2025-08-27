@@ -1,5 +1,5 @@
 services:
-  hello_zero_expo_postgres:
+  zlack_postgres:
     image: postgres:16.2-alpine
     shm_size: 1g
     user: postgres

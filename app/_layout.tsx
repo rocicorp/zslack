@@ -1,14 +1,14 @@
 import { authClient, useSession } from "@/lib/auth";
+import type { ZeroOptions } from "@rocicorp/zero";
+import { ZeroProvider } from "@rocicorp/zero/react";
+import { expoSQLiteStoreProvider } from "@rocicorp/zero/react-native";
 import {
   createMutators,
   type Mutators,
   schema,
   type Schema,
-} from "@hello-zero-expo/shared";
-import { authDataSchema } from "@hello-zero-expo/shared/auth";
-import type { ZeroOptions } from "@rocicorp/zero";
-import { expoSQLiteStoreProvider } from "@rocicorp/zero/react-native";
-import { ZeroProvider } from "@rocicorp/zero/react";
+} from "@zlack/shared";
+import { authDataSchema } from "@zlack/shared/auth";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useMemo } from "react";
@@ -31,7 +31,7 @@ export default function RootLayout() {
 
   const zeroProps = useMemo(() => {
     return {
-      storageKey: "hello-zero-expo",
+      storageKey: "zlack",
       kvStore,
       // 4848 is the default port for the zero server
       // but localhost is not supported in android
