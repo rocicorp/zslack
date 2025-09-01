@@ -46,8 +46,6 @@ export default function RootLayout() {
       schema,
       mutators: createMutators(authData),
       auth: cookie,
-      enableLegacyMutators: false,
-      enableLegacyQueries: false,
     } as const satisfies ZeroOptions<Schema, Mutators>;
   }, [authData, cookie]);
 
