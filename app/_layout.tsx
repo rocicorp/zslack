@@ -1,7 +1,7 @@
 import { authClient, useSession } from "@/lib/auth";
 import type { ZeroOptions } from "@rocicorp/zero";
+import { expoSQLiteStoreProvider } from "@rocicorp/zero/expo-sqlite";
 import { ZeroProvider } from "@rocicorp/zero/react";
-import { expoSQLiteStoreProvider } from "@rocicorp/zero/react-native";
 import {
   createMutators,
   type Mutators,
