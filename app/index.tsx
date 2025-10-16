@@ -1,11 +1,13 @@
 import { signOut, useSession } from "@/lib/auth";
 import { useQuery } from "@rocicorp/zero/react";
 import { queries } from "@zslack/shared";
+import Constants from "expo-constants";
 import { Link, useNavigation, type Href } from "expo-router";
 import { useEffect, useRef } from "react";
 import {
   Alert,
   FlatList,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -26,6 +28,20 @@ function ChannelScreenList() {
 
   const authData = useSession();
   const [channels] = useQuery(queries.allChannels());
+
+  const expoVersion =
+    Constants.expoConfig?.sdkVersion ?? Constants.expoVersion ?? "Unknown";
+
+  const reactNativeVersionInfo = Platform.constants?.reactNativeVersion;
+  const reactNativeVersion = reactNativeVersionInfo
+    ? [
+        reactNativeVersionInfo.major,
+        reactNativeVersionInfo.minor,
+        reactNativeVersionInfo.patch,
+      ]
+        .filter((part) => part !== undefined)
+        .join(".")
+    : "Unknown";
 
   useEffect(() => {
     nav.setOptions({
@@ -55,6 +71,7 @@ function ChannelScreenList() {
   return (
     <View style={styles.container}>
       <FlatList
+        style={styles.list}
         data={channels}
         keyExtractor={(c) => c.id}
         contentContainerStyle={styles.listContent}
@@ -90,6 +107,10 @@ function ChannelScreenList() {
         }
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>Expo {expoVersion}</Text>
+        <Text style={styles.footerText}>React Native {reactNativeVersion}</Text>
+      </View>
       <AuthModal ref={authModalRef} />
     </View>
   );
@@ -97,6 +118,7 @@ function ChannelScreenList() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
+  list: { flex: 1 },
   listContent: { paddingVertical: 8 },
   separator: {
     height: StyleSheet.hairlineWidth,
@@ -106,4 +128,18 @@ const styles = StyleSheet.create({
   headerRightButton: { paddingLeft: 8 },
   headerLogoutText: { color: "#EF4444", fontWeight: "600" },
   headerLoginText: { color: "#0EA5E9", fontWeight: "700" },
+  footer: {
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: "#E5E7EB",
+    backgroundColor: "#F9FAFB",
+    alignItems: "center",
+  },
+  footerText: {
+    fontSize: 12,
+    color: "#6B7280",
+    fontWeight: "500",
+    textAlign: "center",
+  },
 });
