@@ -3,11 +3,11 @@ import {
   type ServerTransaction,
   withValidation,
 } from "@rocicorp/zero";
+import { handleGetQueriesRequest, PushProcessor } from "@rocicorp/zero/server";
 import {
-  handleGetQueriesRequest,
-  PushProcessor,
-  ZQLDatabase,
-} from "@rocicorp/zero/server";
+  type DrizzleTransaction,
+  zeroDrizzle,
+} from "@rocicorp/zero/server/adapters/drizzle";
 import {
   createMutators as createMutatorsShared,
   isLoggedIn,
@@ -18,19 +18,13 @@ import {
 } from "@zslack/shared";
 import type { AuthData } from "@zslack/shared/auth";
 import { auditLogs } from "@zslack/shared/db";
-import {
-  NodePgConnection,
-  type NodePgZeroTransaction,
-} from "drizzle-zero/node-postgres";
 import crypto from "node:crypto";
 import { db } from "./db";
 import { getHono } from "./hono";
 
-type ServerTx = ServerTransaction<Schema, NodePgZeroTransaction<typeof db>>;
+type ServerTx = ServerTransaction<Schema, DrizzleTransaction<typeof db>>;
 
-const processor = new PushProcessor(
-  new ZQLDatabase(new NodePgConnection(db), schema),
-);
+const processor = new PushProcessor(zeroDrizzle(schema, db));
 
 const createMutators = (authData: AuthData | null) => {
   const mutators = createMutatorsShared(authData);
@@ -71,20 +65,20 @@ const zero = getHono()
     const result = await handleGetQueriesRequest(
       (name, args) => ({ query: getQuery(authData, name, args) }),
       schema,
-      c.req.raw,
+      c.req.raw
     );
 
     return c.json(result);
   });
 
 const validatedQueries = Object.fromEntries(
-  Object.values(queries).map((q) => [q.queryName, withValidation(q)]),
+  Object.values(queries).map((q) => [q.queryName, withValidation(q)])
 );
 
 function getQuery(
   authData: AuthData | null,
   name: string,
-  args: readonly ReadonlyJSONValue[],
+  args: readonly ReadonlyJSONValue[]
 ) {
   if (name in validatedQueries) {
     const q = validatedQueries[name];
