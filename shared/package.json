@@ -10,7 +10,7 @@
     "./db": "./src/db/index.ts"
   },
   "scripts": {
-    "generate": "npm run generate:zero && npm run generate:db",
+    "generate": "bun run generate:zero && bun run generate:db",
     "generate:zero": "drizzle-zero generate -s ./src/db/schema/public.ts -o ./src/zero-schema.gen.ts -f",
     "generate:db": "drizzle-kit generate"
   },

@@ -1,0 +1,60 @@
+# Dependencies
+node_modules
+**/node_modules
+
+# Build artifacts
+dist
+build
+.next
+out
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.sample
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+
+# Expo (not needed for API)
+.expo
+android
+ios
+app
+assets
+components
+*.md
+expo-env.d.ts
+app.json
+eas.json
+metro.config.cjs
+
+# Docker
+Dockerfile
+.dockerignore
+docker
+*.dockerfile
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage
+.nyc_output
+
+# Misc
+.claude
+migrations
+scripts

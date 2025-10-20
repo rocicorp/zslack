@@ -1,0 +1,40 @@
+services:
+  zslack_postgres:
+    image: postgres:16.2-alpine
+    shm_size: 1g
+    user: postgres
+    restart: always
+    healthcheck:
+      test: "pg_isready -U user --dbname=postgres"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - 5430:5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: password
+    command: |
+      postgres
+      -c wal_level=logical
+      -c max_wal_senders=10
+      -c max_replication_slots=5
+      -c hot_standby=on
+      -c hot_standby_feedback=on
+    volumes:
+      # this automatically runs drizzle migrations in alphabetical order
+      - ../migrations:/docker-entrypoint-initdb.d
+
+  zslack_api:
+    build:
+      context: ..
+      dockerfile: api/Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      ZERO_UPSTREAM_DB: "postgres://user:password@zslack_postgres:5432/postgres"
+    depends_on:
+      zslack_postgres:
+        condition: service_healthy
+    restart: unless-stopped

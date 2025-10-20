@@ -1,4 +1,3 @@
-import { serve } from "@hono/node-server";
 import { authDataSchema } from "@zslack/shared/auth";
 import { cors } from "hono/cors";
 import { auth } from "./auth";
@@ -14,7 +13,7 @@ app.use(
     allowMethods: ["POST", "GET", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization"],
     credentials: true,
-  }),
+  })
 );
 
 app.on(["GET", "POST"], "/api/auth/*", (c) => auth.handler(c.req.raw));
@@ -44,12 +43,7 @@ app.route("/api/zero", zero);
 app.get("/api", (c) => c.text("OK"));
 app.get("/", (c) => c.text("OK"));
 
-serve(
-  {
-    fetch: app.fetch,
-    port: 3000,
-  },
-  (info) => {
-    console.log(`Server is running on ${info.address}:${info.port}`);
-  },
-);
+export default {
+  fetch: app.fetch,
+  port: 3000,
+};
