@@ -26,10 +26,31 @@ services:
       # this automatically runs drizzle migrations in alphabetical order
       - ../migrations:/docker-entrypoint-initdb.d
 
+  zslack_zero_cache:
+    image: rocicorp/zero:latest
+    ports:
+      - 4848:4848
+    environment:
+      ZERO_UPSTREAM_DB: "postgres://user:password@zslack_postgres:5432/postgres"
+      ZERO_REPLICA_FILE: "/data/replica.db"
+      ZERO_ADMIN_PASSWORD: "admin"
+      ZERO_LOG_LEVEL: "info"
+      ZERO_GET_QUERIES_URL: "http://zslack_api:3000/api/zero/get-queries"
+      ZERO_MUTATE_URL: "http://zslack_api:3000/api/zero/mutate"
+      ZERO_GET_QUERIES_FORWARD_COOKIES: "true"
+      ZERO_MUTATE_FORWARD_COOKIES: "true"
+      NODE_ENV: "development"
+    volumes:
+      - zero_cache_data:/data
+    depends_on:
+      zslack_postgres:
+        condition: service_healthy
+      zslack_api:
+        condition: service_started
+    restart: always
+
   zslack_api:
-    build:
-      context: ..
-      dockerfile: api/Dockerfile
+    build: ..
     ports:
       - 3000:3000
     environment:
@@ -37,4 +58,7 @@ services:
     depends_on:
       zslack_postgres:
         condition: service_healthy
-    restart: unless-stopped
+    restart: always
+
+volumes:
+  zero_cache_data:
