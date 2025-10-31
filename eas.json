@@ -6,13 +6,25 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_ZERO_CACHE_URL": "http://localhost:4848",
+        "EXPO_PUBLIC_API_URL": "http://localhost:3000"
+      }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_ZERO_CACHE_URL": "http://localhost:4848",
+        "EXPO_PUBLIC_API_URL": "http://localhost:3000"
+      }
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_ZERO_CACHE_URL": "https://your-production-zero-cache.com",
+        "EXPO_PUBLIC_API_URL": "https://your-production-api.com"
+      }
     }
   },
   "submit": {
