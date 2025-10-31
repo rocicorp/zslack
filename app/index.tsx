@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import AuthModal, { type AuthModalRef } from "../components/AuthModal";
 import ChannelListItem from "../components/ChannelListItem";
+import packageJson from "../package.json";
 
 export default function ChannelsScreen() {
   const authData = useSession();
@@ -94,7 +95,7 @@ function ChannelScreenList() {
                       text: "Log in",
                       onPress: () => authModalRef.current?.open(),
                     },
-                  ],
+                  ]
                 )
               }
               style={({ pressed }) => [{ opacity: pressed ? 0.4 : 0.5 }]}
@@ -108,6 +109,7 @@ function ChannelScreenList() {
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
       <View style={styles.footer}>
+        <Text style={styles.footerText}>Version: {packageJson.version}</Text>
         <Text style={styles.footerText}>Expo {expoVersion}</Text>
         <Text style={styles.footerText}>React Native {reactNativeVersion}</Text>
       </View>
