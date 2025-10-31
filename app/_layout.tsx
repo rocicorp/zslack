@@ -1,4 +1,5 @@
 import { authClient, useSession } from "@/lib/auth";
+import { config } from "@/lib/config";
 import type { ZeroOptions } from "@rocicorp/zero";
 import { expoSQLiteStoreProvider } from "@rocicorp/zero/expo-sqlite";
 import { ZeroProvider } from "@rocicorp/zero/react";
@@ -38,10 +39,7 @@ export default function RootLayout() {
     return {
       storageKey: "zslack",
       kvStore,
-      // 4848 is the default port for the zero server
-      // but localhost is not supported in android
-      // you need to change it to your API server's IP address
-      server: "http://localhost:4848",
+      server: config.zeroCacheUrl,
       userID: authData?.user.id ?? "anon",
       schema,
       mutators: createMutators(authData),

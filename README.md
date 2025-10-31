@@ -60,12 +60,14 @@ npm run android       # Android emulator
 npm run web           # Expo for Web
 ```
 
-Note: The client and cache/API URLs are configured in code for development:
+Note: URLs are centralized in `lib/config.ts` with defaults for local development:
 
-- `lib/auth.ts` → `baseURL` (API, default 3000)
-- `app/_layout.tsx` → `server` (Zero cache, default 4848)
+- Zero cache: `http://localhost:4848`
+- API: `http://localhost:3000`
 
-If you are testing on a device, point these to your machine's LAN IP instead of `localhost`.
+For production builds (TestFlight/App Store), configure URLs in `eas.json` under each build profile.
+
+If testing on a physical device in development, update the hardcoded defaults in `lib/config.ts` to your machine's LAN IP.
 
 Common utilities:
 
@@ -115,12 +117,14 @@ npm run generate --workspace=shared
 
 We use Expo SQLite for local storage and provide auth and mutators from the shared module.
 
-```12:36:app/_layout.tsx
+URLs are configured via `lib/config.ts`, which reads from environment variables (eas.json) or falls back to localhost defaults.
+
+```app/_layout.tsx
   const zeroProps = useMemo(() => {
     return {
       storageKey: "zslack",
       kvStore: expoSQLiteStoreProvider(),
-      server: "http://localhost:4848", // set to your Zero cache URL
+      server: config.zeroCacheUrl, // from lib/config.ts
       userID: authData?.user.id ?? "anon",
       schema,
       mutators: createMutators(authData),
@@ -148,14 +152,7 @@ This example uses Better Auth (with the Expo plugin) and a Drizzle adapter (Post
 - Auth setup: `api/src/auth.ts`
 - Hono server + auth + Zero routes: `api/src/index.ts`
 
-On the client, the Better Auth Expo client is initialized here:
-
-```5:16:lib/auth.ts
-export const authClient = createAuthClient({
-  baseURL: "http://localhost:3000", // API URL for dev
-  plugins: [expoClient({ scheme: "zslack", storagePrefix: "zslack", storage: SecureStore })],
-});
-```
+On the client, the Better Auth Expo client is initialized in `lib/auth.ts` and uses the centralized config for the API URL.
 
 ### Development
 
@@ -199,6 +196,34 @@ npm run db:migrate --workspace=api
 
 Migrations live in `migrations/` and are mounted into Postgres on container start.
 
----
+### Deploying to TestFlight
 
-If you run into connectivity issues on a physical device, ensure the API (`:3000`) and Zero cache (`:4848`) hosts are reachable over your local network and that `lib/auth.ts` and `app/_layout.tsx` point to the correct URLs.
+This project is configured with EAS Build for iOS deployments.
+
+**1. Configure production URLs**
+
+Update `eas.json` with your production server URLs:
+
+```json
+"production": {
+  "autoIncrement": true,
+  "env": {
+    "EXPO_PUBLIC_ZERO_CACHE_URL": "https://your-production-zero-cache.com",
+    "EXPO_PUBLIC_API_URL": "https://your-production-api.com"
+  }
+}
+```
+
+**2. Build for iOS**
+
+```bash
+bunx eas-cli build --platform ios --profile production
+```
+
+**3. Submit to TestFlight**
+
+```bash
+bunx eas-cli submit --platform ios --latest
+```
+
+The build number will auto-increment on each production build. Once submitted, the build will appear in App Store Connect under TestFlight within 5-15 minutes.

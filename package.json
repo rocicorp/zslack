@@ -8,9 +8,12 @@
     "api",
     "shared"
   ],
+  "trustedDependencies": [
+    "@rocicorp/zero-sqlite3"
+  ],
   "scripts": {
     "dev:expo": "expo start",
-    "dev:api": "bun scripts/check-env.ts && dotenv -- bun run dev --filter=@zslack/api",
+    "dev:api": "bun scripts/check-env.ts && dotenv -- bun --filter=\"@zslack/api\" run dev",
     "dev:zero-cache": "dotenv -- zero-cache-dev -p shared/src/schema.ts",
     "dev:db-up": "docker compose --env-file .env -f ./docker/docker-compose.yml up",
     "dev:db-down": "docker compose --env-file .env -f ./docker/docker-compose.yml down",
@@ -19,7 +22,7 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "format": "bunx prettier --write .",
-    "generate": "dotenv -- bun run generate --filter=@zslack/shared"
+    "generate": "dotenv -- bun --filter=\"@zslack/shared\" run generate"
   },
   "dependencies": {
     "@better-auth/expo": "^1.3.7",
@@ -60,6 +63,7 @@
   "devDependencies": {
     "@babel/core": "^7.28.3",
     "@types/react": "~19.1.0",
+    "dotenv": "^17.2.3",
     "dotenv-cli": "^10.0.0",
     "eslint": "^9.33.0",
     "eslint-config-expo": "~10.0.0",
