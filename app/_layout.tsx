@@ -12,15 +12,23 @@ import {
 import { authDataSchema } from "@zslack/shared/auth";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-// on web, we use the browser's IndexedDB
-const kvStore = Platform.OS === "web" ? undefined : expoSQLiteStoreProvider();
-
 export default function RootLayout() {
+  const [kvStore, setKvStore] = useState<
+    ReturnType<typeof expoSQLiteStoreProvider> | "idb" | undefined
+  >(Platform.OS === "web" ? "idb" : undefined);
   const { data: session, isPending } = useSession();
+
+  // initialize kvStore after mount to avoid
+  // TurboModule crash with New Architecture
+  useEffect(() => {
+    if (Platform.OS !== "web") {
+      setKvStore(expoSQLiteStoreProvider());
+    }
+  }, []);
 
   const authData = useMemo(() => {
     const result = authDataSchema.safeParse(session);
@@ -36,6 +44,9 @@ export default function RootLayout() {
   }, [session, isPending]);
 
   const zeroProps = useMemo(() => {
+    if (!kvStore) {
+      return null;
+    }
     return {
       storageKey: "zslack",
       kvStore,
@@ -45,7 +56,12 @@ export default function RootLayout() {
       mutators: createMutators(authData),
       auth: cookie,
     } as const satisfies ZeroOptions<Schema, Mutators>;
-  }, [authData, cookie]);
+  }, [authData, cookie, kvStore]);
+
+  // show loading state until kvStore is ready
+  if (!zeroProps) {
+    return null;
+  }
 
   return (
     <ZeroProvider {...zeroProps}>
