@@ -11,7 +11,6 @@
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "dev.rocicorp.zslack",
-      "buildNumber": "1",
       "supportsTablet": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false

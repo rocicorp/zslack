@@ -109,6 +109,14 @@ function ChannelScreenList() {
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
       <View style={styles.footer}>
+        <Link href="/stress-test" asChild>
+          <Pressable style={styles.stressTestButton}>
+            <Text style={styles.stressTestButtonText}>Stress Test</Text>
+          </Pressable>
+        </Link>
+
+        <View style={styles.buttonSpacer} />
+
         <Text style={styles.footerText}>Version: {packageJson.version}</Text>
         <Text style={styles.footerText}>Expo {expoVersion}</Text>
         <Text style={styles.footerText}>React Native {reactNativeVersion}</Text>
@@ -143,5 +151,20 @@ const styles = StyleSheet.create({
     color: "#6B7280",
     fontWeight: "500",
     textAlign: "center",
+  },
+  stressTestButton: {
+    backgroundColor: "#0EA5E9",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  stressTestButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  buttonSpacer: {
+    height: 12,
   },
 });

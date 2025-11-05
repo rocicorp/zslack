@@ -11,12 +11,12 @@
   },
   "scripts": {
     "generate": "bun run generate:zero && bun run generate:db",
-    "generate:zero": "drizzle-zero generate -s ./src/db/schema/public.ts -o ./src/zero-schema.gen.ts -f",
+    "generate:zero": "drizzle-zero generate -s ./src/db/schema/public.ts -o ./src/zero-schema.gen.ts -f --disable-legacy-mutators --disable-legacy-queries",
     "generate:db": "drizzle-kit generate"
   },
   "dependencies": {
     "drizzle-orm": "^0.44.4",
-    "drizzle-zero": "^0.14.3",
+    "drizzle-zero": "^0.15.2",
     "pg": "^8.16.3",
     "zod": "^4.0.17"
   },

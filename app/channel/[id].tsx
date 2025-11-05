@@ -34,7 +34,7 @@ function ChannelScreenList({ id }: { id: string }) {
   const authData = useSession();
   const authModalRef = useRef<AuthModalRef>(null);
 
-  const [channel] = useQuery(queries.channelWithMessages(authData.data, id));
+  const [channel] = useQuery(queries.channelWithMessages(id));
 
   useEffect(() => {
     // Show channel title in header

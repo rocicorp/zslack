@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --watch src/index.ts"
+    "dev": "bun --hot src/index.ts"
   },
   "dependencies": {
     "@zslack/shared": "*",
