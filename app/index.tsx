@@ -1,4 +1,5 @@
 import { signOut, useSession } from "@/lib/auth";
+import { storageProviderName } from "@/lib/storage";
 import { useQuery } from "@rocicorp/zero/react";
 import { queries } from "@zslack/shared";
 import Constants from "expo-constants";
@@ -118,6 +119,7 @@ function ChannelScreenList() {
         <View style={styles.buttonSpacer} />
 
         <Text style={styles.footerText}>Version: {packageJson.version}</Text>
+        <Text style={styles.footerText}>Storage: {storageProviderName()}</Text>
         <Text style={styles.footerText}>Expo {expoVersion}</Text>
         <Text style={styles.footerText}>React Native {reactNativeVersion}</Text>
       </View>
