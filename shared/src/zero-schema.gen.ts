@@ -10,10 +10,8 @@
 
 import type { Row } from "@rocicorp/zero";
 import { createBuilder } from "@rocicorp/zero";
-import type { DrizzleToZeroSchema, ZeroCustomType } from "drizzle-zero";
+import type { CustomType } from "drizzle-zero";
 import type * as drizzleSchema from "./db/schema/public";
-
-type ZeroSchema = DrizzleToZeroSchema<typeof drizzleSchema>;
 
 /**
  * The Zero schema object.
@@ -27,8 +25,8 @@ export const schema = {
         id: {
           type: "string",
           optional: false,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "channels",
             "id"
           >,
@@ -36,8 +34,8 @@ export const schema = {
         createdAt: {
           type: "number",
           optional: true,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "channels",
             "createdAt"
           >,
@@ -46,8 +44,8 @@ export const schema = {
         updatedAt: {
           type: "number",
           optional: true,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "channels",
             "updatedAt"
           >,
@@ -56,8 +54,8 @@ export const schema = {
         name: {
           type: "string",
           optional: true,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "channels",
             "name"
           >,
@@ -72,8 +70,8 @@ export const schema = {
         id: {
           type: "string",
           optional: false,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "messages",
             "id"
           >,
@@ -81,8 +79,8 @@ export const schema = {
         createdAt: {
           type: "number",
           optional: true,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "messages",
             "createdAt"
           >,
@@ -91,8 +89,8 @@ export const schema = {
         updatedAt: {
           type: "number",
           optional: true,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "messages",
             "updatedAt"
           >,
@@ -101,8 +99,8 @@ export const schema = {
         senderID: {
           type: "string",
           optional: false,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "messages",
             "senderID"
           >,
@@ -111,8 +109,8 @@ export const schema = {
         channelID: {
           type: "string",
           optional: false,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "messages",
             "channelID"
           >,
@@ -121,8 +119,8 @@ export const schema = {
         body: {
           type: "string",
           optional: true,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "messages",
             "body"
           >,
@@ -137,8 +135,8 @@ export const schema = {
         id: {
           type: "string",
           optional: false,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "users",
             "id"
           >,
@@ -146,8 +144,8 @@ export const schema = {
         name: {
           type: "string",
           optional: true,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "users",
             "name"
           >,
@@ -155,8 +153,8 @@ export const schema = {
         email: {
           type: "string",
           optional: false,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "users",
             "email"
           >,
@@ -164,8 +162,8 @@ export const schema = {
         emailVerified: {
           type: "boolean",
           optional: true,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "users",
             "emailVerified"
           >,
@@ -174,8 +172,8 @@ export const schema = {
         image: {
           type: "string",
           optional: true,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "users",
             "image"
           >,
@@ -183,8 +181,8 @@ export const schema = {
         createdAt: {
           type: "number",
           optional: true,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "users",
             "createdAt"
           >,
@@ -193,8 +191,8 @@ export const schema = {
         updatedAt: {
           type: "number",
           optional: true,
-          customType: null as unknown as ZeroCustomType<
-            ZeroSchema,
+          customType: null as unknown as CustomType<
+            typeof drizzleSchema,
             "users",
             "updatedAt"
           >,
@@ -245,8 +243,8 @@ export const schema = {
       ],
     },
   },
-  enableLegacyQueries: true,
-  enableLegacyMutators: true,
+  enableLegacyQueries: false,
+  enableLegacyMutators: false,
 } as const;
 
 /**

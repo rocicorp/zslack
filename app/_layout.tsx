@@ -1,34 +1,23 @@
 import { authClient, useSession } from "@/lib/auth";
 import { config } from "@/lib/config";
+import { storageProvider } from "@/lib/storage";
 import type { ZeroOptions } from "@rocicorp/zero";
-import { expoSQLiteStoreProvider } from "@rocicorp/zero/expo-sqlite";
 import { ZeroProvider } from "@rocicorp/zero/react";
 import {
   createMutators,
-  type Mutators,
   schema,
+  type Mutators,
   type Schema,
 } from "@zslack/shared";
-import { authDataSchema } from "@zslack/shared/auth";
+import { authDataSchema, type AuthData } from "@zslack/shared/auth";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
-  const [kvStore, setKvStore] = useState<
-    ReturnType<typeof expoSQLiteStoreProvider> | "idb" | undefined
-  >(Platform.OS === "web" ? "idb" : undefined);
   const { data: session, isPending } = useSession();
-
-  // initialize kvStore after mount to avoid
-  // TurboModule crash with New Architecture
-  useEffect(() => {
-    if (Platform.OS !== "web") {
-      setKvStore(expoSQLiteStoreProvider());
-    }
-  }, []);
 
   const authData = useMemo(() => {
     const result = authDataSchema.safeParse(session);
@@ -44,19 +33,18 @@ export default function RootLayout() {
   }, [session, isPending]);
 
   const zeroProps = useMemo(() => {
-    if (!kvStore) {
-      return null;
-    }
     return {
       storageKey: "zslack",
-      kvStore,
+      kvStore: storageProvider(),
       server: config.zeroCacheUrl,
       userID: authData?.user.id ?? "anon",
       schema,
       mutators: createMutators(authData),
       auth: cookie,
-    } as const satisfies ZeroOptions<Schema, Mutators>;
-  }, [authData, cookie, kvStore]);
+      context: authData,
+      logLevel: "debug",
+    } as const satisfies ZeroOptions<Schema, Mutators, AuthData | null>;
+  }, [authData, cookie]);
 
   // show loading state until kvStore is ready
   if (!zeroProps) {
@@ -79,6 +67,10 @@ export default function RootLayout() {
           <Stack.Screen
             name="channel/[id]"
             options={{ title: "Channel", headerBackTitle: "Back" }}
+          />
+          <Stack.Screen
+            name="stress-test"
+            options={{ title: "Stress Test", headerBackTitle: "Back" }}
           />
         </Stack>
       </SafeAreaProvider>

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "verbatimModuleSyntax": true,
+    "strictNullChecks": true,
     "paths": {
       "@/*": ["./*"]
     }
