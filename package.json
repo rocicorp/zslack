@@ -8,9 +8,6 @@
     "api",
     "shared"
   ],
-  "trustedDependencies": [
-    "@rocicorp/zero-sqlite3"
-  ],
   "scripts": {
     "dev:expo": "expo start",
     "dev:api": "bun scripts/check-env.ts && dotenv -- bun --filter=\"@zslack/api\" run dev",
@@ -70,5 +67,8 @@
     "eslint": "^9.33.0",
     "eslint-config-expo": "~10.0.0",
     "typescript": "~5.9.2"
-  }
+  },
+  "trustedDependencies": [
+    "@rocicorp/zero-sqlite3"
+  ]
 }
