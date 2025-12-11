@@ -1,9 +1,8 @@
 import { useSession } from "@/lib/auth";
 import { generateId } from "@/lib/id";
-import { storageProvider } from "@/lib/storage";
 import { getRandomMessage } from "@/lib/stress-test-messages";
 import { useQuery, useZero } from "@rocicorp/zero/react";
-import { builder, queries, type Mutators, type Schema } from "@zslack/shared";
+import { mutators, queries, zql } from "@zslack/shared";
 import { useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -33,9 +32,7 @@ const TEST_DURATION = 5_000;
 export default function StressTestScreen() {
   const nav = useNavigation();
   const authData = useSession();
-  const z = useZero<Schema, Mutators>();
-
-  const [storage] = useState(storageProvider());
+  const zero = useZero();
 
   const [isRunning, setIsRunning] = useState(false);
   const [metrics, setMetrics] = useState<StressTestMetrics>({
@@ -94,7 +91,7 @@ export default function StressTestScreen() {
     if (!existingChannels || existingChannels.length === 0) {
       Alert.alert(
         "No channels",
-        "No channels found. Please create some channels first."
+        "No channels found. Please create some channels first.",
       );
       setIsRunning(false);
       return;
@@ -102,7 +99,7 @@ export default function StressTestScreen() {
 
     const channelIds = existingChannels.map((c) => c.id);
     const messageIds = existingChannels.flatMap((c) =>
-      c.messages.map((m) => m.id)
+      c.messages.map((m) => m.id),
     );
 
     let totalWrites = 0;
@@ -125,12 +122,14 @@ export default function StressTestScreen() {
               try {
                 const messageId = generateId();
 
-                await z.mutate.message.sendMessage({
-                  id: messageId,
-                  channelId: randomChannelId,
-                  body: getRandomMessage(),
-                  createdAt: Date.now(),
-                }).client;
+                const result = await zero.mutate(
+                  mutators.message.sendMessage({
+                    id: messageId,
+                    channelId: randomChannelId,
+                    body: getRandomMessage(),
+                    createdAt: Date.now(),
+                  }),
+                ).client;
 
                 messageIds.push(messageId);
 
@@ -142,7 +141,7 @@ export default function StressTestScreen() {
                 totalWrites++;
               }
             }
-          })()
+          })(),
         );
       }
 
@@ -161,8 +160,8 @@ export default function StressTestScreen() {
                   messageIds[Math.floor(Math.random() * messageIds.length)];
 
                 // run local-only query
-                const result = await z.run(
-                  builder.messages
+                const result = await zero.run(
+                  zql.messages
                     .where("id", "=", randomMessageId)
                     .related("channel")
                     .related("sender")
@@ -170,7 +169,7 @@ export default function StressTestScreen() {
                   {
                     type: "unknown",
                     ttl: "none",
-                  }
+                  },
                 );
 
                 if (result?.id !== randomMessageId) {
@@ -185,7 +184,7 @@ export default function StressTestScreen() {
                 totalReads++;
               }
             }
-          })()
+          })(),
         );
       }
 

@@ -1,31 +1,26 @@
-import { syncedQuery, syncedQueryWithContext } from "@rocicorp/zero";
+import { defineQueries, defineQuery } from "@rocicorp/zero";
 import { z } from "zod";
-import { type AuthData } from "./auth";
-import { builder } from "./zero-schema.gen";
+import { zql } from "./zero-schema.gen";
 import { isLoggedIn } from "./zql";
 
-export const queries = {
-  allChannels: syncedQuery("allChannels", z.tuple([]), () =>
-    builder.channels
+export const queries = defineQueries({
+  allChannels: defineQuery(z.undefined(), () =>
+    zql.channels
       .orderBy("createdAt", "desc")
       .related("messages", (q) => q.orderBy("createdAt", "desc").limit(5000))
-      .limit(10)
+      .limit(10),
   ),
 
-  channelWithMessages: syncedQueryWithContext(
-    "channelWithMessages",
-    z.tuple([z.string()]),
-    (authData: AuthData | null, id) => {
-      isLoggedIn(authData);
+  channelWithMessages: defineQuery(z.string(), ({ ctx, args }) => {
+    isLoggedIn(ctx);
 
-      return builder.channels
-        .where("id", "=", id)
-        .related("messages", (q) =>
-          q.related("sender").orderBy("createdAt", "desc")
-        )
-        .orderBy("createdAt", "desc")
-        .limit(5000)
-        .one();
-    }
-  ),
-};
+    return zql.channels
+      .where("id", "=", args as string)
+      .related("messages", (q) =>
+        q.related("sender").orderBy("createdAt", "desc"),
+      )
+      .orderBy("createdAt", "desc")
+      .limit(5000)
+      .one();
+  }),
+});
