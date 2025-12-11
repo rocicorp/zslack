@@ -9,7 +9,7 @@ import {
   type Mutators,
   type Schema,
 } from "@zslack/shared";
-import { authDataSchema, type AuthData } from "@zslack/shared/auth";
+import { authDataSchema } from "@zslack/shared/auth";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useMemo } from "react";
@@ -41,9 +41,8 @@ export default function RootLayout() {
       schema,
       mutators: createMutators(authData),
       auth: cookie,
-      context: authData,
       logLevel: "debug",
-    } as const satisfies ZeroOptions<Schema, Mutators, AuthData | null>;
+    } as const satisfies ZeroOptions<Schema, Mutators>;
   }, [authData, cookie]);
 
   // show loading state until kvStore is ready

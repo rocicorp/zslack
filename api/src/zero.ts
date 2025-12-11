@@ -22,11 +22,7 @@ import crypto from "node:crypto";
 import { db } from "./db";
 import { getHono } from "./hono";
 
-type ServerTx = ServerTransaction<
-  Schema,
-  DrizzleTransaction<typeof db>,
-  AuthData | null
->;
+type ServerTx = ServerTransaction<Schema, DrizzleTransaction<typeof db>>;
 
 const processor = new PushProcessor(zeroDrizzle(schema, db));
 
@@ -67,10 +63,9 @@ const zero = getHono()
     const authData = c.get("auth");
 
     const result = await handleGetQueriesRequest(
-      (name, args) => ({ query: getQuery(name, args) }),
+      (name, args) => ({ query: getQuery(authData, name, args) }),
       schema,
-      c.req.raw,
-      authData
+      c.req.raw
     );
 
     return c.json(result);
@@ -80,10 +75,14 @@ const validatedQueries = Object.fromEntries(
   Object.values(queries).map((q) => [q.queryName, withValidation(q)])
 );
 
-function getQuery(name: string, args: readonly ReadonlyJSONValue[]) {
+function getQuery(
+  authData: AuthData | null,
+  name: string,
+  args: readonly ReadonlyJSONValue[]
+) {
   if (name in validatedQueries) {
     const q = validatedQueries[name];
-    return q(...args);
+    return q(authData, ...args);
   }
   throw new Error(`Unknown query: ${name}`);
 }

@@ -3,7 +3,6 @@ import { generateId } from "@/lib/id";
 import { storageProvider } from "@/lib/storage";
 import { getRandomMessage } from "@/lib/stress-test-messages";
 import { useQuery, useZero } from "@rocicorp/zero/react";
-import { dropAllProviderDatabases } from "@rocicorp/zero/sqlite";
 import { builder, queries, type Mutators, type Schema } from "@zslack/shared";
 import { useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
@@ -126,18 +125,12 @@ export default function StressTestScreen() {
               try {
                 const messageId = generateId();
 
-                const result = await z.mutate.message.sendMessage({
+                await z.mutate.message.sendMessage({
                   id: messageId,
                   channelId: randomChannelId,
                   body: getRandomMessage(),
                   createdAt: Date.now(),
                 }).client;
-
-                if (result.type === "error") {
-                  throw new Error(
-                    `${result.error.message} (${result.error.type})`
-                  );
-                }
 
                 messageIds.push(messageId);
 
@@ -260,22 +253,6 @@ export default function StressTestScreen() {
             </Pressable>
           ) : (
             <></>
-          )}
-          {storage !== "idb" && (
-            <Pressable
-              style={styles.stressTestButtonSecondary}
-              onPress={async () => {
-                await dropAllProviderDatabases(storage);
-                Alert.alert(
-                  "Success",
-                  "All databases have been dropped successfully."
-                );
-              }}
-            >
-              <Text style={styles.stressTestButtonText}>
-                Drop all databases
-              </Text>
-            </Pressable>
           )}
         </View>
 
