@@ -3,12 +3,7 @@ import { config } from "@/lib/config";
 import { storageProvider } from "@/lib/storage";
 import type { ZeroOptions } from "@rocicorp/zero";
 import { ZeroProvider } from "@rocicorp/zero/react";
-import {
-  createMutators,
-  schema,
-  type Mutators,
-  type Schema,
-} from "@zslack/shared";
+import { mutators, schema } from "@zslack/shared";
 import { authDataSchema } from "@zslack/shared/auth";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -34,15 +29,14 @@ export default function RootLayout() {
 
   const zeroProps = useMemo(() => {
     return {
-      storageKey: "zslack",
       kvStore: storageProvider(),
       server: config.zeroCacheUrl,
       userID: authData?.user.id ?? "anon",
       schema,
-      mutators: createMutators(authData),
+      mutators,
       auth: cookie,
       logLevel: "debug",
-    } as const satisfies ZeroOptions<Schema, Mutators>;
+    } as const satisfies ZeroOptions;
   }, [authData, cookie]);
 
   // show loading state until kvStore is ready

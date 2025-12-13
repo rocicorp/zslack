@@ -13,7 +13,7 @@ app.use(
     allowMethods: ["POST", "GET", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization"],
     credentials: true,
-  })
+  }),
 );
 
 app.on(["GET", "POST"], "/api/auth/*", (c) => auth.handler(c.req.raw));

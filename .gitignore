@@ -38,3 +38,6 @@ yarn-error.*
 
 app-example
 .env
+
+# Zero
+zero.db*

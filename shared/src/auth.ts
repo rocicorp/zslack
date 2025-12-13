@@ -23,3 +23,10 @@ export const authDataSchema = z.object({
 export type Session = z.infer<typeof sessionSchema>;
 export type User = z.infer<typeof userSchema>;
 export type AuthData = z.infer<typeof authDataSchema>;
+
+// Register the database provider for type safety
+declare module "@rocicorp/zero" {
+  interface DefaultTypes {
+    context: AuthData | null;
+  }
+}

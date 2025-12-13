@@ -1,6 +1,6 @@
 import { signOut, useSession } from "@/lib/auth";
 import { storageProviderName } from "@/lib/storage";
-import { useQuery } from "@rocicorp/zero/react";
+import { useQuery, useZero } from "@rocicorp/zero/react";
 import { queries } from "@zslack/shared";
 import Constants from "expo-constants";
 import { Link, useNavigation, type Href } from "expo-router";
@@ -19,16 +19,10 @@ import ChannelListItem from "../components/ChannelListItem";
 import packageJson from "../package.json";
 
 export default function ChannelsScreen() {
-  const authData = useSession();
-
-  return authData.isPending ? <></> : <ChannelScreenList />;
-}
-
-function ChannelScreenList() {
   const nav = useNavigation();
   const authModalRef = useRef<AuthModalRef>(null);
 
-  const authData = useSession();
+  const zero = useZero();
   const [channels] = useQuery(queries.allChannels());
 
   const expoVersion =
@@ -48,7 +42,7 @@ function ChannelScreenList() {
   useEffect(() => {
     nav.setOptions({
       headerLeft: () =>
-        authData.data ? (
+        zero.context ? (
           <Pressable
             onPress={() => signOut()}
             style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
@@ -68,7 +62,7 @@ function ChannelScreenList() {
           </Pressable>
         ),
     });
-  }, [nav, authData.data]);
+  }, [nav, zero.context]);
 
   return (
     <View style={styles.container}>
@@ -78,7 +72,7 @@ function ChannelScreenList() {
         keyExtractor={(c) => c.id}
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) =>
-          authData.data ? (
+          zero.context ? (
             <Link href={`/channel/${item.id}` as Href} asChild>
               <Pressable>
                 <ChannelListItem channel={item} />
@@ -96,7 +90,7 @@ function ChannelScreenList() {
                       text: "Log in",
                       onPress: () => authModalRef.current?.open(),
                     },
-                  ]
+                  ],
                 )
               }
               style={({ pressed }) => [{ opacity: pressed ? 0.4 : 0.5 }]}

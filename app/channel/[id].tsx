@@ -1,11 +1,9 @@
-import { useSession } from "@/lib/auth";
 import { generateId } from "@/lib/id";
 import { useQuery, useZero } from "@rocicorp/zero/react";
-import { queries, type Mutators, type Schema } from "@zslack/shared";
+import { mutators, queries } from "@zslack/shared";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect, useRef } from "react";
 import {
-  Alert,
   FlatList,
   KeyboardAvoidingView,
   Platform,
@@ -20,18 +18,17 @@ import MessageItem from "../../components/MessageItem";
 export default function ChannelScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  const authData = useSession();
+  const zero = useZero();
 
-  return authData.isPending ? <></> : <ChannelScreenList id={id} />;
+  return !zero.context ? <></> : <ChannelScreenList id={id} />;
 }
 
 function ChannelScreenList({ id }: { id: string }) {
   const insets = useSafeAreaInsets();
   const nav = useNavigation();
 
-  const z = useZero<Schema, Mutators>();
+  const zero = useZero();
 
-  const authData = useSession();
   const authModalRef = useRef<AuthModalRef>(null);
 
   const [channel] = useQuery(queries.channelWithMessages(authData.data, id));
@@ -64,33 +61,23 @@ function ChannelScreenList({ id }: { id: string }) {
         keyboardShouldPersistTaps="handled"
       />
       <View
-        style={[
-          styles.inputBar,
-          { paddingBottom: Math.max(insets.bottom, 8) },
-          !authData.data && { opacity: 0.5 },
-        ]}
+        style={[styles.inputBar, { paddingBottom: Math.max(insets.bottom, 8) }]}
       >
         <MessageInput
           placeholder={`Message #${channel?.name ?? ""}`}
           onSend={async (text) => {
-            if (!authData.data) {
-              Alert.alert("Login required", "Please log in to send messages.", [
-                { text: "Cancel", style: "cancel" },
-                { text: "Log in", onPress: () => authModalRef.current?.open() },
-              ]);
-              return;
-            }
-
             if (!channel) {
               throw new Error("Channel not found");
             }
 
-            await z.mutate.message.sendMessage({
-              id: generateId(),
-              channelId: channel.id,
-              body: text,
-              createdAt: Date.now(),
-            }).client;
+            await zero.mutate(
+              mutators.message.sendMessage({
+                id: generateId(),
+                channelId: channel.id,
+                body: text,
+                createdAt: Date.now(),
+              }),
+            ).client;
           }}
         />
       </View>

@@ -1,90 +1,81 @@
 import {
-  type ReadonlyJSONValue,
-  type ServerTransaction,
-  withValidation,
+  defineMutator,
+  defineMutators,
+  mustGetMutator,
+  mustGetQuery,
 } from "@rocicorp/zero";
-import { handleGetQueriesRequest, PushProcessor } from "@rocicorp/zero/server";
-import {
-  type DrizzleTransaction,
-  zeroDrizzle,
-} from "@rocicorp/zero/server/adapters/drizzle";
-import {
-  createMutators as createMutatorsShared,
-  isLoggedIn,
-  type Mutators,
-  queries,
-  schema,
-  type Schema,
-} from "@zslack/shared";
-import type { AuthData } from "@zslack/shared/auth";
-import { auditLogs } from "@zslack/shared/db";
+import { handleMutateRequest, handleQueryRequest } from "@rocicorp/zero/server";
+import { isLoggedIn, mutators, queries, schema } from "@zslack/shared";
+import { auditLogs, getZeroDb } from "@zslack/shared/db";
 import crypto from "node:crypto";
+import { z } from "zod";
 import { db } from "./db";
 import { getHono } from "./hono";
 
-type ServerTx = ServerTransaction<Schema, DrizzleTransaction<typeof db>>;
+const dbProvider = getZeroDb(db);
 
-const processor = new PushProcessor(zeroDrizzle(schema, db));
+const serverMutators = defineMutators(mutators, {
+  message: {
+    sendMessage: defineMutator(
+      z.object({
+        id: z.string(),
+        channelId: z.string(),
+        body: z.string(),
+        createdAt: z.number(),
+      }),
+      async ({ tx, args, ctx }) => {
+        isLoggedIn(ctx);
 
-const createMutators = (authData: AuthData | null) => {
-  const mutators = createMutatorsShared(authData);
+        await mutators.message.sendMessage.fn({ tx, args, ctx });
 
-  return {
-    ...mutators,
-    message: {
-      ...mutators.message,
-      async sendMessage(tx: ServerTx, params) {
-        isLoggedIn(authData);
-
-        await mutators.message.sendMessage(tx, params);
-
-        // we can use the db tx to insert server-only data, like audit logs
-        await tx.dbTransaction.wrappedTransaction.insert(auditLogs).values({
-          id: crypto.randomUUID(),
-          userId: authData.user.id,
-          action: "sendMessage",
-        });
+        if (tx.location === "server") {
+          // we can use the db tx to insert server-only data, like audit logs
+          await tx.dbTransaction.wrappedTransaction.insert(auditLogs).values({
+            id: crypto.randomUUID(),
+            userId: ctx.user.id,
+            action: "sendMessage",
+          });
+        }
       },
-    },
-  } as const satisfies Mutators;
-};
+    ),
+  },
+});
 
 const zero = getHono()
   .post("/mutate", async (c) => {
     // get the auth data from betterauth
     const authData = c.get("auth");
 
-    const result = await processor.process(createMutators(authData), c.req.raw);
+    const result = await handleMutateRequest(
+      dbProvider,
+      async (transact) =>
+        await transact(async (tx, name, args) => {
+          const mutator = mustGetMutator(serverMutators, name);
+          return mutator.fn({
+            args,
+            tx,
+            ctx: authData,
+          });
+        }),
+      c.req.raw,
+    );
 
     return c.json(result);
   })
-  .post("/get-queries", async (c) => {
+  .post("/query", async (c) => {
     // get the auth data from betterauth
     const authData = c.get("auth");
 
-    const result = await handleGetQueriesRequest(
-      (name, args) => ({ query: getQuery(authData, name, args) }),
+    const result = await handleQueryRequest(
+      (name, args) => {
+        const query = mustGetQuery(queries, name);
+        return query.fn({ args, ctx: authData });
+      },
       schema,
-      c.req.raw
+      c.req.raw,
     );
 
     return c.json(result);
   });
-
-const validatedQueries = Object.fromEntries(
-  Object.values(queries).map((q) => [q.queryName, withValidation(q)])
-);
-
-function getQuery(
-  authData: AuthData | null,
-  name: string,
-  args: readonly ReadonlyJSONValue[]
-) {
-  if (name in validatedQueries) {
-    const q = validatedQueries[name];
-    return q(authData, ...args);
-  }
-  throw new Error(`Unknown query: ${name}`);
-}
 
 export { zero };
