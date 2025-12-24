@@ -36,6 +36,7 @@ export default function RootLayout() {
       mutators,
       auth: cookie,
       logLevel: "debug",
+      context: authData,
     } as const satisfies ZeroOptions;
   }, [authData, cookie]);
 
