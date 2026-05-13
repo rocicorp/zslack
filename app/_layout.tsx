@@ -30,8 +30,8 @@ export default function RootLayout() {
   const zeroProps = useMemo(() => {
     return {
       kvStore: storageProvider(),
-      server: config.zeroCacheUrl,
-      userID: authData?.user.id ?? "anon",
+      cacheURL: config.zeroCacheUrl,
+      userID: authData?.user.id,
       schema,
       mutators,
       auth: cookie,

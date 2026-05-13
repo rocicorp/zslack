@@ -46,9 +46,9 @@ const zero = getHono()
     // get the auth data from betterauth
     const authData = c.get("auth");
 
-    const result = await handleMutateRequest(
+    const result = await handleMutateRequest({
       dbProvider,
-      async (transact) =>
+      handler: async (transact) =>
         await transact(async (tx, name, args) => {
           const mutator = mustGetMutator(serverMutators, name);
           return mutator.fn({
@@ -57,8 +57,9 @@ const zero = getHono()
             ctx: authData,
           });
         }),
-      c.req.raw,
-    );
+      request: c.req.raw,
+      userID: authData?.user.id,
+    });
 
     return c.json(result);
   })
@@ -66,14 +67,15 @@ const zero = getHono()
     // get the auth data from betterauth
     const authData = c.get("auth");
 
-    const result = await handleQueryRequest(
-      (name, args) => {
+    const result = await handleQueryRequest({
+      handler: (name, args) => {
         const query = mustGetQuery(queries, name);
         return query.fn({ args, ctx: authData });
       },
       schema,
-      c.req.raw,
-    );
+      request: c.req.raw,
+      userID: authData?.user.id,
+    });
 
     return c.json(result);
   });
