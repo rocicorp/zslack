@@ -1,0 +1,6 @@
+[install]
+# Supply-chain hardening: only install npm package versions published
+# at least 7 days ago (604800 seconds), so freshly-compromised releases
+# are likely caught/yanked before we pull them.
+# https://snyk.io/blog/tanstack-npm-packages-compromised/
+minimumReleaseAge = 604800
