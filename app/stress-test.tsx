@@ -122,7 +122,7 @@ export default function StressTestScreen() {
               try {
                 const messageId = generateId();
 
-                const result = await zero.mutate(
+                await zero.mutate(
                   mutators.message.sendMessage({
                     id: messageId,
                     channelId: randomChannelId,

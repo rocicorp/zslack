@@ -31,7 +31,7 @@ export default function RootLayout() {
     return {
       kvStore: storageProvider(),
       cacheURL: config.zeroCacheUrl,
-      userID: authData?.user.id,
+      userID: authData?.user.id ?? null,
       schema,
       mutators,
       auth: cookie,
@@ -40,8 +40,8 @@ export default function RootLayout() {
     } as const satisfies ZeroOptions;
   }, [authData, cookie]);
 
-  // show loading state until kvStore is ready
-  if (!zeroProps) {
+  // Avoid initializing Zero with a logged-out identity while auth is loading.
+  if (isPending) {
     return null;
   }
 
