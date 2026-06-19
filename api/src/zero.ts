@@ -58,7 +58,7 @@ const zero = getHono()
           });
         }),
       request: c.req.raw,
-      userID: authData?.user.id ?? null,
+      userID: authData?.user.id,
     });
 
     return c.json(result);
@@ -74,7 +74,7 @@ const zero = getHono()
       },
       schema,
       request: c.req.raw,
-      userID: authData?.user.id ?? null,
+      userID: authData?.user.id,
     });
 
     return c.json(result);
