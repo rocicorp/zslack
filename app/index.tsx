@@ -1,4 +1,4 @@
-import { signOut, useSession } from "@/lib/auth";
+import { signOut } from "@/lib/auth";
 import { storageProviderName } from "@/lib/storage";
 import { useQuery, useZero } from "@rocicorp/zero/react";
 import { queries } from "@zslack/shared";

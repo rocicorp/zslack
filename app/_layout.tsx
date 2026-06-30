@@ -12,7 +12,7 @@ import { Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
-  const { data: session, isPending } = useSession();
+  const { data: session } = useSession();
 
   const authData = useMemo(() => {
     const result = authDataSchema.safeParse(session);
@@ -25,25 +25,22 @@ export default function RootLayout() {
     // we force a re-render when the session changes, since getCookie is
     // not reactive
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, isPending]);
+  }, [session]);
+
+  const userID = authData?.user.id;
 
   const zeroProps = useMemo(() => {
     return {
       kvStore: storageProvider(),
       cacheURL: config.zeroCacheUrl,
-      userID: authData?.user.id,
+      userID,
       schema,
       mutators,
-      auth: cookie,
+      auth: userID ? cookie : undefined,
       logLevel: "debug",
       context: authData,
     } as const satisfies ZeroOptions;
-  }, [authData, cookie]);
-
-  // show loading state until kvStore is ready
-  if (!zeroProps) {
-    return null;
-  }
+  }, [authData, cookie, userID]);
 
   return (
     <ZeroProvider {...zeroProps}>
