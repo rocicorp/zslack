@@ -4,3 +4,4 @@
 # are likely caught/yanked before we pull them.
 # https://snyk.io/blog/tanstack-npm-packages-compromised/
 minimumReleaseAge = 604800
+minimumReleaseAgeExcludes = ["@rocicorp/logger", "@rocicorp/zero"]
