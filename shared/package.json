@@ -1,8 +1,8 @@
 {
   "name": "@zslack/shared",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
+  "type": "module",
   "react-native": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
@@ -15,8 +15,8 @@
     "generate:db": "drizzle-kit generate"
   },
   "dependencies": {
-    "drizzle-orm": "^0.45.1",
-    "drizzle-zero": "^0.17.4",
+    "drizzle-orm": "^0.45.2",
+    "drizzle-zero": "0.19.0",
     "pg": "^8.16.3",
     "zod": "^4.1.13"
   },
