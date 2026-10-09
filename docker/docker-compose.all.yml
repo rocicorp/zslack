@@ -27,7 +27,7 @@ services:
       - ../migrations:/docker-entrypoint-initdb.d
 
   zslack_zero_cache:
-    image: ghcr.io/rocicorp/zero:1.10.0-canary.17
+    image: ghcr.io/rocicorp/zero:1.10.0
     ports:
       - 4848:4848
     environment:
